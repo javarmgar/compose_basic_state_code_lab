@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,16 +34,37 @@ Display state -> Event -> update state -> Display State....
     Update state: Event handler changes the state
     Display State: The Ui is updated to display the new state
  */
+
+/*
+5. Memory in a composable function
+
+The Composition: a description of the UI built by Jetpack Compose when it executes composables.
+Initial composition: creation of a Composition by running composables the first time.
+Recomposition: re-running composables to update the Composition when data changes.
+
+Compose state tracking system:
+
+Compose has -> special state tracking system
+ -> schedules recompositions for composables read a state.
+ -> Compose be granular
+    -> just recompose those composable functions that need to change, not the whole UI.
+
+    This is done by tracking
+        not only "writes" (that is, state changes),
+        but also "reads" to the state.
+ */
 @Composable
 fun WaterCounter( modifier: Modifier = Modifier) {
-    var count = 0
+    val count: MutableState<Int> = mutableStateOf(0)
     Column(modifier = modifier.padding(16.dp)) {
         Text(
             text = "Glasses: $count",
         )
         Button(
             modifier = Modifier.padding(top = 16.dp),
-            onClick = { count++.also { Log.d("WaterCounter", "count: $count") } },
+            onClick = {
+                count.value++
+                count.also { Log.d("WaterCounter", "count: $count.value") } },
         ) {
             Text(text = "Add one")
         }
