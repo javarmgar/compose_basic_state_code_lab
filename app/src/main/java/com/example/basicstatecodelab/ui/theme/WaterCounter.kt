@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,9 +54,18 @@ Compose has -> special state tracking system
         not only "writes" (that is, state changes),
         but also "reads" to the state.
  */
+
+/*
+ Event though we are observing an state properly and that the recomposition is taking place every time
+ the state changes.
+ The code  that is executed reinitialize the variable to zero
+
+ Solution: Use an API that stores the value so that next time retrieve the saved value
+    Remember API is the answer
+ */
 @Composable
 fun WaterCounter( modifier: Modifier = Modifier) {
-    val count: MutableState<Int> = mutableStateOf(0)
+    val count: MutableState<Int> = remember { mutableStateOf(0) }
     Column(modifier = modifier.padding(16.dp)) {
         Text(
             text = "Glasses: $count",
@@ -64,7 +74,7 @@ fun WaterCounter( modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 16.dp),
             onClick = {
                 count.value++
-                count.also { Log.d("WaterCounter", "count: $count.value") } },
+                count.also { Log.d("WaterCounter", "count: ${count.value}") } },
         ) {
             Text(text = "Add one")
         }
