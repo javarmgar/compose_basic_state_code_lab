@@ -11,7 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.basicstatecodelab.ui.theme.BasicStateCodelabTheme
+import com.example.basicstatecodelab.ui.theme.WaterCounter
+import com.example.basicstatecodelab.ui.theme.WellnessScreen
+/*
+State in Compose:
+DEF: An app's "state" is any value that can change over time.
+ -  broad definition
+ -  encompasses everything from ->  Room database to -> variable in a class.
 
+ Examples:
+
+ - in a chat app: most recent messages
+ - user's profile photo
+ - the scroll position in a list of items
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,25 +35,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    WellnessScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BasicStateCodelabTheme {
-        Greeting("Android")
-    }
-}
+
