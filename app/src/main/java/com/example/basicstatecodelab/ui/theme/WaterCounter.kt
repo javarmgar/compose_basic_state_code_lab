@@ -2,6 +2,7 @@ package com.example.basicstatecodelab.ui.theme
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -110,17 +111,40 @@ fun WaterCounter( modifier: Modifier = Modifier) {
     var count: Int by remember { mutableStateOf(0) }
     Column(modifier = modifier.padding(16.dp)) {
         if(count > 0){
+            /*
+            remember stores objects in the Composition, and
+            forgets the object if the source location where remember is called
+            is not invoked again during a recomposition.
+            e.g. here it depends on count , if count == 0 then this never executes leaving the item out
+            provoking objet deletion
+             */
+            var showTask by remember { mutableStateOf(true) }
+            if(showTask){
+                WellnessTaskItem(
+                    taskName = "Have you taken your 15 minutes walk today?",
+                    onClose = { showTask = false}
+                )
+            }
             Text(
                 text = "Glasses: $count",
             )
         }
-        Button(
-            modifier = Modifier.padding(top = 16.dp),
-            onClick = {
-                count++
-                count.also { Log.d("WaterCounter", "count: ${count}") } },
-        ) {
-            Text(text = "Add one")
+        Row(Modifier.padding(top = 8.dp)) {
+            Button(
+                modifier = Modifier.padding(top = 16.dp),
+                onClick = { count++ },
+                enabled = count < 10
+            ) {
+                Text(text = "Add one")
+            }
+
+            Button(
+                modifier = Modifier.padding(top = 16.dp),
+                onClick = { count = 0 },
+            ) {
+                Text(text = "Clear water count")
+            }
+
         }
     }
 
