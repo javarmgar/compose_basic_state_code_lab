@@ -14,6 +14,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -118,7 +119,16 @@ fun WaterCounter( modifier: Modifier = Modifier) {
             e.g. here it depends on count , if count == 0 then this never executes leaving the item out
             provoking objet deletion
              */
-            var showTask by remember { mutableStateOf(true) }
+            //var showTask by remember { mutableStateOf(true) }
+            /*
+            - remember
+                - helps you retain state across recompositions,
+                - it's not retained across configuration changes.
+            - rememberSaveable instead of remember.
+                - helps you retain state across recompositions,
+                - it's retained across configuration changes.
+             */
+            var showTask by rememberSaveable { mutableStateOf(true) }
             if(showTask){
                 WellnessTaskItem(
                     taskName = "Have you taken your 15 minutes walk today?",
