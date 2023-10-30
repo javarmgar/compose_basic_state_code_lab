@@ -176,16 +176,10 @@ Best practice: only pass parameters needs : To avoid unnecessary recompositions
 @Composable
 fun StatefulCounter(modifier: Modifier = Modifier){
     var countState: Int by remember { mutableStateOf(0) }
-    val onReset = { countState = 0 }
     val onAdd: () -> Unit = { countState++ }
-    var showTaskState by rememberSaveable { mutableStateOf(true) }
-    val onClose = { showTaskState = false}
     StatelessCounter(
         countState = countState,
-        onReset = onReset,
         onIncrement = onAdd,
-        showTaskState = showTaskState,
-        onClose = onClose,
         modifier = modifier,
     )
 }
@@ -194,43 +188,10 @@ fun StatefulCounter(modifier: Modifier = Modifier){
 fun StatelessCounter(
     modifier: Modifier = Modifier,
     countState: Int,
-    onReset: () -> Unit,
     onIncrement: () -> Unit,
-    showTaskState: Boolean,
-    onClose: () -> Unit
 ) {
 
-
     Column(modifier = modifier.padding(16.dp)) {
-
-        if(countState > 0){
-            /*
-            remember stores objects in the Composition, and
-            forgets the object if the source location where remember is called
-            is not invoked again during a recomposition.
-            e.g. here it depends on count , if count == 0 then this never executes leaving the item out
-            provoking objet deletion
-             */
-            //var showTask by remember { mutableStateOf(true) }
-            /*
-            - remember
-                - helps you retain state across recompositions,
-                - it's not retained across configuration changes.
-            - rememberSaveable instead of remember.
-                - helps you retain state across recompositions,
-                - it's retained across configuration changes.
-             */
-
-            if(showTaskState){
-                WellnessTaskItem(
-                    taskName = "Have you taken your 15 minutes walk today?",
-                    onClose = onClose
-                )
-            }
-            Text(
-                text = "Glasses: $countState",
-            )
-        }
         Row(Modifier.padding(top = 8.dp)) {
             Button(
                 modifier = Modifier.padding(top = 16.dp),
@@ -239,14 +200,6 @@ fun StatelessCounter(
             ) {
                 Text(text = "Add one")
             }
-
-            Button(
-                modifier = Modifier.padding(top = 16.dp),
-                onClick = onReset,
-            ) {
-                Text(text = "Clear water count")
-            }
-
         }
     }
 
