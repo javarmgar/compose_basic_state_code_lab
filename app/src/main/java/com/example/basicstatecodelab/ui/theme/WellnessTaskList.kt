@@ -10,6 +10,7 @@ fun WellnessTaskList(
     listState: List<WellnessTask>,
     onCloseTask: (WellnessTask) -> Unit,
     modifier: Modifier = Modifier,
+    onCheckedTask: (WellnessTask, Boolean) -> Unit,
 ) {
 
     /*
@@ -31,7 +32,9 @@ fun WellnessTaskList(
         ){task ->
             WellnessTaskItem(
                 taskName = task.label,
-                onClose = {onCloseTask(task)}
+                checkedState = task.checked,
+                onClose = {onCloseTask(task)},
+                onCheckedTask = { checked:Boolean -> onCheckedTask(task, checked) },
             )
         }
     }

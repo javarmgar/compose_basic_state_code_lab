@@ -42,7 +42,12 @@ fun WellnessScreen(
         val onCloseTask = { task:WellnessTask -> wellnessViewModel.remove(task) }
         WellnessTaskList(
             listState = wellnessViewModel.tasks,
-            onCloseTask = onCloseTask,
+            onCloseTask = { task ->
+                wellnessViewModel.remove(task)
+            },
+            onCheckedTask = { task, checked ->
+                wellnessViewModel.changeTaskChecked(task, checked)
+            }
         )
     }
 
